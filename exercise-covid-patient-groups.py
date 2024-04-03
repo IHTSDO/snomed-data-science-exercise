@@ -1,5 +1,6 @@
 from fhir_terminology_client import FhirTerminologyClient
 import pandas as pd
+from GraphDifferenceClustering import GraphDifferenceClustering
 
 # Run Snowstorm Lite locally
 # https://github.com/IHTSDO/snowstorm-lite
@@ -36,3 +37,19 @@ all_dead_snomed_codes = tx.expand_vs_as_codes(f'http://snomed.info/sct?fhir_vs=i
 patient_ids_with_dead = events_from_covid_detected_cases.query('snomedCode in @all_dead_snomed_codes')['patient_id'].unique()
 dead_percentage = (len(patient_ids_with_dead) / len(patient_ids_with_covid_detected)) * 100
 print(f'Dead percentage: {dead_percentage}')
+print()
+
+
+##
+# Experimental clustering
+##
+
+# Analyse using sample of events from covid cases, first half of available data
+first_half_covid_events = events_from_covid_detected_cases[0:int(len(events_from_covid_detected_cases) / 2)]
+
+group_a_events = first_half_covid_events.query('patient_id not in @patient_ids_with_dead')
+group_b_events = first_half_covid_events.query('patient_id in @patient_ids_with_dead')
+
+# Set up and run the clustering tool
+graph_clustering = GraphDifferenceClustering(group_a_events, group_b_events, tx, 0.1, 0.05, 10)
+best_differentiating_concepts = graph_clustering.run_clustering()
