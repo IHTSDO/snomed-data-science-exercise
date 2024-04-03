@@ -17,7 +17,7 @@ with open(ndjson_file_path, 'r') as file:
         record = json.loads(line)
         # Extract patient data
         patients_data.append({
-            'roleId': record['roleId'],
+            'patient_id': record['roleId'],
             'gender': record['gender'],
             'dob': record['dob']
         })
@@ -25,14 +25,14 @@ with open(ndjson_file_path, 'r') as file:
         if 'events' in record and record['numEvents'] > 0:
             for event in record['events']:
                 events_data.append({
-                    'roleId': record['roleId'],
+                    'patient_id': record['roleId'],
                     'date': event['date'],
-                    'conceptId': event['conceptId']
+                    'snomedCode': event['conceptId']
                 })
 
 # Write patients.csv
 with open(patients_csv_path, 'w', newline='') as csvfile:
-    fieldnames = ['roleId', 'gender', 'dob']
+    fieldnames = ['patient_id', 'gender', 'dob']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
     for patient in patients_data:
@@ -40,7 +40,7 @@ with open(patients_csv_path, 'w', newline='') as csvfile:
 
 # Write events.csv
 with open(events_csv_path, 'w', newline='') as csvfile:
-    fieldnames = ['roleId', 'date', 'conceptId']
+    fieldnames = ['patient_id', 'date', 'snomedCode']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
     for event in events_data:
