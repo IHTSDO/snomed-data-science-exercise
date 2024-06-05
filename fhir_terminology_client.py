@@ -7,6 +7,9 @@ class FhirTerminologyClient:
         self.api_url = api_url
         self.logging = logging
 
+    def expand_ecl(self, ecl):
+        return self._expand_vs(f'http://snomed.info/sct?fhir_vs=ecl/{ecl}', False)
+
     def expand_vs_as_codes(self, vs_url):
         return self._expand_vs(vs_url, False)
 

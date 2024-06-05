@@ -1,2 +1,4 @@
-requests
-pandas
+requests~=2.31.0
+pandas~=2.2.1
+matplotlib~=3.9.0
+numpy~=1.26.4
