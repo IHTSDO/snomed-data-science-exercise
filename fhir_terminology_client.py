@@ -17,6 +17,7 @@ class FhirTerminologyClient:
         return self._expand_vs(vs_url, True)
 
     def _expand_vs(self, vs_url, include_labels):
+        vs_url = vs_url.replace("{", "%7B").replace("}", "%7D").replace("+", "%2B")
         codes = []
         offset = 0
         count = 10000

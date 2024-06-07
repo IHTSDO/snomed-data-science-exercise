@@ -32,7 +32,7 @@ def filter_patients(events, ecl):
 
 # Create cohort of patients with COVID detected
 # SNOMED CT code: 1240581000000104 |Severe acute respiratory syndrome coronavirus 2 detected (finding)|
-cohort_events = filter_patients(all_events, '<< 1240581000000104')
+cohort_events = filter_patients(all_events, '<< 1240581000000104 {{ +HISTORY }}')
 print(f'COVID Detected patients: {len(cohort_events["patient_id"].unique()):,}')
 
 # Example SNOMED CT Browser, Concept URL: http://snomed.info/id/1240581000000104
@@ -42,16 +42,16 @@ print(f'COVID Detected patients: {len(cohort_events["patient_id"].unique()):,}')
 # Create patient group with hypertension
 # Code: 38341003 |Hypertensive disorder, systemic arterial (disorder)|
 print(f'cohort_events count: {len(cohort_events):}')
-hypertension_events = filter_patients(cohort_events, '<< 38341003')
+hypertension_events = filter_patients(cohort_events, '<< 38341003 {{ +HISTORY }}')
 print(f'hypertension_events count: {len(hypertension_events):}')
 
 # Create patient group with hypertension + pneumonia
 # Code: 882784691000119100 |COVID-19 pneumonia (disorder)|
-hypertension_and_pne_events = filter_patients(hypertension_events, '<< 882784691000119100')
+hypertension_and_pne_events = filter_patients(hypertension_events, '<< 882784691000119100 {{ +HISTORY }}')
 
 # Create patient group with hypertension + dead
 # Code: 419099009 |Dead (finding)|
-hypertension_and_dead_events = filter_patients(hypertension_events, '<< 419099009')
+hypertension_and_dead_events = filter_patients(hypertension_events, '<< 419099009 {{ +HISTORY }}')
 
 
 # Create "All other patients" group. The set of patients not in any of the more specific groups.
@@ -59,10 +59,10 @@ other_events = cohort_events[~cohort_events['patient_id'].isin(hypertension_even
 
 # Create patient group of "other" + pneumonia
 # Code: 882784691000119100 |COVID-19 pneumonia (disorder)|
-other_and_pne_events = filter_patients(other_events, '<< 882784691000119100')
+other_and_pne_events = filter_patients(other_events, '<< 882784691000119100 {{ +HISTORY }}')
 # Create patient group of "other" + dead
 # Code: 419099009 |Dead (finding)|
-other_and_dead_events = filter_patients(other_events, '<< 419099009')
+other_and_dead_events = filter_patients(other_events, '<< 419099009 {{ +HISTORY }}')
 
 
 def patient_count(events):
