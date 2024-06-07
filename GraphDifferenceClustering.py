@@ -98,11 +98,12 @@ class GraphDifferenceClustering:
         last_progress = -1
         for code_used in all_codes_used:
             node = graph_builder.get_node(code_used)
-            node.calculate_group_difference_with_subtypes(group_a_size, group_b_size, force_zero)
-            nodes.add(node)
-            for ancestor in node.get_ancestors():
-                ancestor.calculate_group_difference_with_subtypes(group_a_size, group_b_size, force_zero)
-                nodes.add(ancestor)
+            if node is not None:
+                node.calculate_group_difference_with_subtypes(group_a_size, group_b_size, force_zero)
+                nodes.add(node)
+                for ancestor in node.get_ancestors():
+                    ancestor.calculate_group_difference_with_subtypes(group_a_size, group_b_size, force_zero)
+                    nodes.add(ancestor)
             done += 1
             progress = int((done/total)*100)
             if force_zero == False and progress > last_progress and progress % 5 == 0:
