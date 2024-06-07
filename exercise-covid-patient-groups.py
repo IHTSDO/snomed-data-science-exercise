@@ -3,8 +3,12 @@ import pandas as pd
 from GraphDifferenceClustering import GraphDifferenceClustering
 
 # Run Snowstorm Lite locally
-# https://github.com/IHTSDO/snowstorm-lite
+# Quick start guide: https://github.com/IHTSDO/snowstorm-lite
+
+# Option 1. Local Snowstorm Lite
 tx = FhirTerminologyClient("http://localhost:8080/fhir")
+# Option 2. Online Demo Snowstorm Lite
+# tx = FhirTerminologyClient("https://snowstorm-lite.nw.r.appspot.com/fhir")
 
 # Load clinical event data
 # Columns are patient_id, date, snomedCode
